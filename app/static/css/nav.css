@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Montserrat:ital,wght@0,900;1,900&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+header {
+    background-image: linear-gradient(to bottom, rgb(27, 27, 27),rgb(20, 20, 20));
+}
+
+#nav {
+    background-color: rgb(20, 20, 20);
+}
+
+header h1 {
+    padding: 10px 0px 10px 0px!important;
+    font-family: 'Sansation';
+    color: rgb(35, 19, 175);
+    font-weight: 400;
+    font-size: 30px;
+    text-decoration: none;
+    margin: 0px 0px 0px 3px;
+    width: max-content !important;
+}
+
+header svg {
+    width: 50px !important;
+    height: 50px !important;
+    color: rgb(35, 19, 175);
+    padding: 8px 0px 8px 3px !important;
+}
+header svg, header h1 {
+    -webkit-user-drag: none;  /* Evita arrastar elementos no Chrome/Safari */
+    user-select: none;
+}
+header h1.inativo {
+    user-select: auto;
+}
+header svg:hover {
+    cursor: pointer;
+}
+header #perfil {
+    margin-left: auto !important;
+
+}
+#nav a.home {
+    text-decoration: none;
+    padding: 4px 15px;
+    text-align: start;
+    width: auto !important;
+    color: white;
+}
+
+#nav a.home:hover {
+    background-color: rgba(104, 103, 103, 0.466);
+}
+
+nav.inativo {
+    display: none;
+}
+
+a#logout {
+    width: 90px !important;
+}

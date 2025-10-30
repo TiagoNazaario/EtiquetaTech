@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %} 
+
+    <title>Registrar novo usuário</title>
+
+    {% include 'nav.html' %}
+
+    <style>
+        #nome {
+            padding-left: 0px;
+        }
+        #sobrenome {
+            padding-right: 0px;
+        }
+    </style>
+
+
+    <div class="container p-3 rounded shadow">
+            <div class="row mt-4">
+                <h2>Cadastrar Usuário</h2>
+                <form action="" method="post" class="row mt-4 p-4 rounded shadow ">
+                    {{form.csrf_token}}
+                    
+                    <div id="nome" class="col-6">
+                        {{form.nome.label()}}
+                        {{form.nome(class="form-control")}}
+                    </div>
+                    
+                    <div id="sobrenome" class="col-6">
+                        {{form.sobrenome.label()}}
+                        {{form.sobrenome(class="form-control col-6")}}
+                    </div>
+                    
+                    {{form.email.label()}}
+                    {{form.email(class="form-control")}}
+                    
+                    {{form.senha.label()}}
+                    {{form.senha(class="form-control")}}
+
+                    {{form.confirm_senha.label()}}
+                    {{form.confirm_senha(class="form-control")}}
+
+                    {{form.btn_submit(class="btn btn-primary col-6 mt-2")}}
+                </form>
+                
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+{% endblock %}

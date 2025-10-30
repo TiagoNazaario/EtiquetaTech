@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %} 
+
+        <title>EtiquetaTech</title>
+
+        {% include 'nav.html' %}
+
+        <style>
+            .container {
+                width: 900px !important;
+            }
+            .row a{
+                width: auto;
+            }
+        </style>
+
+        <div class="container  rounded shadow">
+            {% if current_user.is_authenticated %}
+            
+            {% else %}
+            <h1>Faça seu Login</h1>
+            <form action="" method="post" class="row mt-4 p-4 rounded shadow ">
+                    {{form.csrf_token}}
+                    
+                    {{form.email.label()}}
+                    {{form.email(class="form-control")}}
+                    
+                    {{form.senha.label()}}
+                    {{form.senha(class="form-control")}}
+
+                    {{form.btn_submit(class="btn btn-primary col-2 mt-2")}}
+
+                    <div class="row">Não tem cadastro?<a href="{{url_for('Cadastro')}}">  Clique aqui para cadastrar usuario</a></div>
+            </form>
+            {% endif %}
+        </div>
+
+    
+
+{% endblock %} 

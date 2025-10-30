@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %} 
+
+    <title>Perfil</title>
+    {% include 'nav.html' %}
+    <style>
+        .container a {
+            text-decoration: none;
+            margin-top: 10px;
+            display: block;
+            width: max-content;
+            color: rgb(231, 14, 14);
+        }
+    </style>
+
+    <div class="container p-3 rounded shadow">
+        <div class="row">
+            <h2>Informações do Perfil</h2>
+            <div class="col-md-6">
+                Nome:
+                <input type="text" value="{{obj.nome}}" class="form-control" readonly>
+            </div>
+            <div class="col-md-6">
+                Sobrenome:
+                <input type="text" value="{{obj.sobrenome}}" class="form-control" readonly>
+            </div>
+            <div class="col-md-12">
+                Email:
+                <input type="text" value="{{obj.email}}" class="form-control" readonly>
+            </div>
+        </div>
+        <a href="{{url_for('Logout')}}">Sair</a>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

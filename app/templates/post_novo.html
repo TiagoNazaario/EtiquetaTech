@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %} 
+
+    <title>Novos Posts</title>
+
+    {% include 'nav.html' %}
+    <div class="container p-3 rounded shadow">
+            <div class="row">
+                <h2>Novo Post</h2>
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                    <div class="alert alert-{{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+                
+                <form action="" method="post" class="container mt-3 rounded shadow ">
+                    {{form.csrf_token}}
+                    
+                    
+                    {{form.mensagem.label()}}
+                    {{form.mensagem(class="form-control")}}
+                    
+                    
+                    {{form.btn_submit(class="btn btn-primary col-6 mt-2")}}
+                </form>
+                
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        setTimeout(() => {
+        const alertas = document.querySelectorAll('.alert');
+        alertas.forEach(a => {
+            const bsAlert = new bootstrap.Alert(a);
+            bsAlert.close();
+        });
+        }, 3000); // desaparece após 3 segundos
+    </script>
+
+{% endblock %}
