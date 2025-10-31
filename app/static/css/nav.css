@@ -37,10 +37,7 @@ header h1.inativo {
 header svg:hover {
     cursor: pointer;
 }
-header #perfil {
-    margin-left: auto !important;
 
-}
 #nav a.home {
     text-decoration: none;
     padding: 4px 15px;
@@ -57,6 +54,6 @@ nav.inativo {
     display: none;
 }
 
-a#logout {
+a#perfil {
     width: 90px !important;
 }

@@ -11,6 +11,8 @@ def Homepage():
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
+    else:
+        flash("Email ou Senha incorretos", "danger")
     return render_template('homepage.html', usuario=usuario, form=form)
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -89,7 +91,7 @@ def Post_Lista():
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 @login_required
 def PostDetail(id):
-    post = Posts.query.get('id')
+    post = Posts.query.get(id)
     form = PostComentarioForm()
     if form.validate_on_submit():
         form.save(current_user.id, id)
@@ -103,7 +105,7 @@ def PostDetail(id):
 def Perfil():
     id = current_user.id
     obj = Usuario.query.get(id)
-    return render_template('Perfil.html', obj=obj)
+    return render_template('perfil.html', obj=obj)
 
 
 

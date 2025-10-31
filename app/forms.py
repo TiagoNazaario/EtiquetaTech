@@ -13,17 +13,17 @@ class User_Form(FlaskForm):
     confirm_senha = PasswordField('Senha', validators=[DataRequired(), EqualTo('senha')])
     btn_submit = SubmitField('Cadastrar')
 
-    def validade_email(self, email):
-        if Usuario.query.filter(email=email.data).first():
-            return ValidationError('Usuario já cadastrado com esse email!!!')
+    def validate_email(self, email):
+        if Usuario.query.filter_by(email=email.data).first():
+            raise ValidationError('Usuario já cadastrado com esse email!!!')
 
     def save(self):
-        senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
+        senha_hash = bcrypt.generate_password_hash(self.senha.data).decode('utf-8')
         user = Usuario(
             nome = self.nome.data,
             sobrenome = self.sobrenome.data,
             email = self.email.data,
-            senha = senha
+            senha = senha_hash
         )
 
         db.session.add(user)
@@ -41,14 +41,10 @@ class LoginForm(FlaskForm):
         user = Usuario.query.filter_by(email=self.email.data).first()
 
         # Verificar se a senha é valida
-        if user:
-            if bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
+        if user and bcrypt.check_password_hash(user.senha, self.senha.data):
                 # Retorna o Usuario
-                return user
-            else: 
-                raise Exception('Senha Incorreta!')
-        else:
-            raise Exception('USuario não encontrado')
+            return user
+        return None
 
 
 class ContatoForm(FlaskForm):
@@ -62,7 +58,7 @@ class ContatoForm(FlaskForm):
         novo_contato = Contatos(
             nome = self.nome.data,
             email = self.email.data,
-            assunto = self.email.data,
+            assunto = self.assunto.data,
             mensagem = self.mensagem.data
         )
 
