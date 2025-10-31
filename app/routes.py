@@ -89,7 +89,7 @@ def Post_Lista():
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 @login_required
 def PostDetail(id):
-    post = Posts.query.get('id')
+    post = Posts.query.get(id)
     form = PostComentarioForm()
     if form.validate_on_submit():
         form.save(current_user.id, id)
