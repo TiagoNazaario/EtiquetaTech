@@ -11,6 +11,8 @@ def Homepage():
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
+    else:
+        flash("Email ou Senha incorretos", "danger")
     return render_template('homepage.html', usuario=usuario, form=form)
 
 @app.route('/registro', methods=['GET', 'POST'])
