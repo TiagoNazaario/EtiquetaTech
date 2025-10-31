@@ -18,7 +18,7 @@ class User_Form(FlaskForm):
             return ValidationError('Usuario já cadastrado com esse email!!!')
 
     def save(self):
-        senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
+        senha = bcrypt.generate_password_hash(self.senha.data.decode('utf-8'))
         user = Usuario(
             nome = self.nome.data,
             sobrenome = self.sobrenome.data,
@@ -41,7 +41,7 @@ class LoginForm(FlaskForm):
         user = Usuario.query.filter_by(email=self.email.data).first()
 
         # Verificar se a senha é valida
-        if user and bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
+        if user and bcrypt.check_password_hash(user.senha, self.senha.data):
                 # Retorna o Usuario
                 return user
         return None
