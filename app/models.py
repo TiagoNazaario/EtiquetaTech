@@ -22,7 +22,7 @@ class Usuario(db.Model, UserMixin):
     nome = db.Column(db.String(30), nullable=True)
     sobrenome = db.Column(db.String(50), nullable=True)
     email = db.Column(db.String(50), nullable=True)
-    senha = db.Column(db.String, nullable=True)
+    senha = db.Column(db.Text, nullable=True)
     posts = db.relationship('Posts', backref='usuario', lazy=True, cascade="all, delete")
     post_comentarios = db.relationship('PostComentarios', backref='usuario', lazy=True)
 
