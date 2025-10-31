@@ -103,7 +103,7 @@ def PostDetail(id):
 def Perfil():
     id = current_user.id
     obj = Usuario.query.get(id)
-    return render_template('Perfil.html', obj=obj)
+    return render_template('perfil.html', obj=obj)
 
 
 
