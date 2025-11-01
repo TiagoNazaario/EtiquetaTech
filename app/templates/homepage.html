@@ -8,33 +8,51 @@
         <style>
             .container {
                 width: 900px !important;
+                text-align: center;
             }
             .row a{
                 width: auto;
             }
+            #home h1{
+                color: rgb(35, 19, 175);
+                font-family: 'Sansation';
+                font-weight: 400;
+
+            }
         </style>
+                <!-- Login -->
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                    <div class="alert alert-{{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
 
-        <div class="container  rounded shadow">
+        <div class="container rounded shadow">
             {% if current_user.is_authenticated %}
-            
+                <div id="home"  class="">
+                <h1>Bem Vindo a EtiquetaTech</h1>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum vel molestias molestiae beatae accusamus ipsam alias, ullam modi fugit placeat, nobis maiores repellendus numquam facere nemo debitis provident haru Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum odio similique rem. Magni dolores, maxime ratione doloribus dolor aliquam libero. Libero facere odio quidem nisi unde suscipit laborum aperiam ut!</p>
+        </div>
             {% else %}
-            <h1>Faça seu Login</h1>
-            <form action="" method="post" class="row mt-4 p-4 rounded shadow ">
-                    {{form.csrf_token}}
-                    
-                    {{form.email.label()}}
-                    {{form.email(class="form-control")}}
-                    
-                    {{form.senha.label()}}
-                    {{form.senha(class="form-control")}}
+                <h1>Faça seu Login</h1>
+                <form action="" method="post" class="row mt-4 p-4">
+                        {{form.csrf_token}}
+                        
+                        {{form.email.label()}}
+                        {{form.email(class="form-control")}}
+                        
+                        {{form.senha.label()}}
+                        {{form.senha(class="form-control")}}
 
-                    {{form.btn_submit(class="btn btn-primary col-2 mt-2")}}
+                        {{form.btn_submit(class="btn btn-primary col-2 mt-2")}}
 
-                    <div class="row">Não tem cadastro?<a href="{{url_for('Cadastro')}}">  Clique aqui para cadastrar usuario</a></div>
-            </form>
+                        <div class="row">Não tem cadastro?<a href="{{url_for('Cadastro')}}">  Clique aqui para cadastrar usuario</a></div>
+                </form>
             {% endif %}
         </div>
-
-    
 
 {% endblock %} 

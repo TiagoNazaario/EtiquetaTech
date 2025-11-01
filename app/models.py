@@ -23,24 +23,13 @@ class Usuario(db.Model, UserMixin):
     sobrenome = db.Column(db.String(50), nullable=True)
     email = db.Column(db.String(50), nullable=True)
     senha = db.Column(db.Text, nullable=True)
-    posts = db.relationship('Posts', backref='usuario', lazy=True, cascade="all, delete")
-    post_comentarios = db.relationship('PostComentarios', backref='usuario', lazy=True)
 
 
-class Posts(db.Model):
+class Vendas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    data_criacao = db.Column(db.DateTime, default=datetime.now())
-    mensagem = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
-    comentarios = db.relationship('PostComentarios', backref='posts', lazy=True)
-
-    def msg_resumo(self):
-        return f"{self.mensagem[:30]}..."
+    produto = db.Column(db.String(100))
+    quantidade = db.Column(db.Integer)
+    preco = db.Column(db.Float)
+    
 
 
-class PostComentarios(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    data_criacao = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    comentario = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=True)

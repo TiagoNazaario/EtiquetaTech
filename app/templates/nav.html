@@ -16,15 +16,10 @@
     </header>
     <nav id="nav" class="row  m-0">
         <a href="{{url_for('Homepage')}}" class="home col-md-2">Início</a>
-        <a href="{{url_for('Registro')}}" class="home col-md-2">Contatos - new</a>
-        <a href="{{url_for('Registro_lista')}}" class="home col-md-2">Contatos lista</a>
-        <a href="{{url_for('Post_Novo')}}" class="home col-md-2">Novo post</a>
-        <a href="{{url_for('Post_Lista')}}" class="home col-md-2" >Lista de Posts</a>
-        <a href="{{url_for('Registro_old')}}" class="home col-md-2">Contatos - old</a>
+        <a href="{{url_for('Dash')}}" class="home col-md-2">Dashboard</a>
         
         {% if current_user.is_authenticated %}
-            <a href="{{url_for('Perfil')}}" id="logout" class="perfil btn btn-dark">Perfil</a>
-            <a href="{{url_for('Logout')}}">Sair</a>
+            <a href="{{url_for('Perfil')}}" id="perfil" class="perfil btn btn-dark">Perfil</a>
         {% endif %}
     </nav>
 

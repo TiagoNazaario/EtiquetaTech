@@ -19,5 +19,5 @@ bcrypt = Bcrypt()
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app.routes import Homepage, Registro
+from app.routes import Homepage
 from app.models import Contatos
