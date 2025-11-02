@@ -48,6 +48,7 @@ header svg:hover {
 
 #nav a.home:hover {
     background-color: rgba(104, 103, 103, 0.466);
+    color: #00BBF9;
 }
 
 nav.inativo {
@@ -56,4 +57,7 @@ nav.inativo {
 
 a#perfil {
     width: 90px !important;
+}
+a#perfil:hover {
+    color: #00BBF9;
 }

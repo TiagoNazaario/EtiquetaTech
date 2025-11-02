@@ -1,9 +1,9 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
-from app.models import Contatos, Usuario, Vendas
-from app.forms import ContatoForm, User_Form, LoginForm
+from app.models import Usuario, Venda, Cliente, Produto
+from app.forms import User_Form, LoginForm
 from flask_login import login_user, logout_user, current_user, login_required
-#from collectionpy.chart.apexcharts import Chart, CND_SRC
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -58,26 +58,3 @@ def Dash():
 
 
 
-
-
-
-## Formato não Recomendado
-@app.route('/registrar_old', methods=['GET', 'POST'])
-@login_required
-def Registro_old():
-    context = {}
-    if request.method == 'GET':
-        pesquisa = request.args.get('pesquisa')
-    elif request.method == 'POST':
-
-        nome = request.form['nomeForm']
-        email = request.form['emailForm']
-        assunto = request.form['assuntoForm']
-        mensagem = request.form['msgForm']
-
-        novo_contato = Contatos(nome=nome, email=email, assunto=assunto, mensagem=mensagem)
-
-        db.session.add(novo_contato)
-        db.session.commit()
-
-    return render_template('registrar_old.html', context=context)
