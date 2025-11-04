@@ -61,3 +61,31 @@ a#perfil {
 a#perfil:hover {
     color: #00BBF9;
 }
+.sidebar {
+  background-color: #212529;
+  color: white;
+  height: auto;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.sidebar ul li a:hover {
+  background-color: #343a40;
+}
