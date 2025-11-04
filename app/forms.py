@@ -1,5 +1,9 @@
 from flask_wtf import FlaskForm
+<<<<<<< HEAD
 from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField
+=======
+from wtforms import StringField, SubmitField, PasswordField, FloatField, IntegerField
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from flask_login import current_user
 
@@ -50,6 +54,7 @@ class LoginForm(FlaskForm):
 
 class VendaForm(FlaskForm):
     nome_produto = StringField('Produto', validators=[DataRequired()])
+<<<<<<< HEAD
     select_produto = SelectField('Opções',choices=[], coerce=str)
     preco = StringField('Preco', validators=[DataRequired()])
     quantidade = IntegerField('Quantidade',validators=[DataRequired()])
@@ -77,6 +82,20 @@ class VendaForm(FlaskForm):
         usuario_id = current_user.id
     )
 
+=======
+    preco = FloatField('Preco', validators=[DataRequired()])
+    quantidade = IntegerField('Quantidade',validators=[DataRequired()])
+    valor_total = FloatField('Valor_Total')
+    btn_salvar = SubmitField('Salvar')
+
+    def save(self):
+        nova_venda = Venda(
+            nome_produto = self.nome_produto.data,
+            preco = self.preco.data,
+            quantidade = self.quantidade.data,
+            valor_total = ((self.preco.data) * (self.quantidade.data))
+        )
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 
         db.session.add(nova_venda)
         db.session.commit()

@@ -12,12 +12,20 @@ body {
     color: white;
     height: auto;
     padding: 20px;
+<<<<<<< HEAD
     max-width: 200px !important;
+=======
+    max-width: 178px !important;
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 }
 
 .sidebar h2 {
   margin-bottom: 20px;
+<<<<<<< HEAD
   font-size: 24px;
+=======
+  font-size: 22px;
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 }
 
 .sidebar ul {
@@ -37,7 +45,11 @@ body {
   background-color: #343a40;
 }
 
+<<<<<<< HEAD
 .cardDash {
+=======
+.card {
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -46,6 +58,7 @@ body {
   padding: 20px;
  
 }
+<<<<<<< HEAD
 .cardDash h3 {
     font-size:  1em;
 }
@@ -107,4 +120,8 @@ body {
 .card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+=======
+.card h3 {
+    font-size:  1em;
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 }

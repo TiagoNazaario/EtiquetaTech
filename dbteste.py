@@ -1,4 +1,5 @@
 from app import db
+<<<<<<< HEAD
 from app.models import Venda
 from datetime import datetime, timezone
 import random
@@ -21,3 +22,6 @@ for v in vendas:
 db.session.commit()
 
 print(f"{len(vendas)} vendas atualizadas com datas aleatórias de {ano_atual}.")
+=======
+
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29

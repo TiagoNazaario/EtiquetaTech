@@ -1,7 +1,11 @@
 from app import app, db
 from collections import defaultdict
 from flask import render_template, url_for, request, redirect, flash
+<<<<<<< HEAD
 from app.models import Usuario, Venda
+=======
+from app.models import Usuario
+>>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
 from app.forms import User_Form, LoginForm, VendaForm
 from flask_login import login_user, logout_user, current_user, login_required
 
