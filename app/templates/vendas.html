@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% include 'nav.html' %}
+
+    <div class="container p-3 rounded shadow ">
+        <h1>Registre sua Venda</h1>
+
+        <form action="" method="post" class="row mt-4 p-4">
+                    {{form.csrf_token}}
+                    
+                    <div id="nome_produto" class="col-6">
+                        {{form.nome_produto.label()}}
+                        {{form.nome_produto(class="form-control")}}
+                    </div>
+                    
+                    <div id="preco" class="col-6">
+                        {{form.preco.label()}}
+                        {{form.preco(class="form-control col-6")}}
+                    </div>
+                    
+                    {{form.quantidade.label()}}
+                    {{form.quantidade(class="form-control")}}
+
+                    {{form.btn_salvar(class="btn btn-primary col-6 mt-2")}}
+    </div>
+
+
+
+{% endblock %}

@@ -1,8 +1,9 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect, flash
-from app.models import Usuario, Venda, Cliente, Produto
-from app.forms import User_Form, LoginForm
+from app.models import Usuario
+from app.forms import User_Form, LoginForm, VendaForm
 from flask_login import login_user, logout_user, current_user, login_required
+
 
 
 
@@ -49,8 +50,18 @@ def Perfil():
     return render_template('perfil.html', obj=obj)
 
 
+@app.route('/vendas', methods=['GET', 'POST'])
+def Vendas_Registro():
+    form = VendaForm()
+    if form.validate_on_submit():
+        return redirect(url_for('Homepage'))
+    print(form.valor_total.data)
+    return render_template('vendas.html', form=form)
+
+
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def Dash():
     return render_template('dashboard.html')
 

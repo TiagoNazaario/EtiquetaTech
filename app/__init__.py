@@ -20,4 +20,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app.routes import Homepage, Usuario, Cadastro, Dash, Logout, Perfil
-from app.models import Venda, Cliente, Produto, Usuario
+from app.models import Venda, Usuario

@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, FloatField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from app import db, bcrypt
-from app.models import Usuario
+from app.models import Usuario, Venda
 
 class User_Form(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
@@ -45,6 +45,25 @@ class LoginForm(FlaskForm):
                 # Retorna o Usuario
             return user
         return None
+
+
+class VendaForm(FlaskForm):
+    nome_produto = StringField('Produto', validators=[DataRequired()])
+    preco = FloatField('Preco', validators=[DataRequired()])
+    quantidade = IntegerField('Quantidade',validators=[DataRequired()])
+    valor_total = FloatField('Valor_Total')
+    btn_salvar = SubmitField('Salvar')
+
+    def save(self):
+        nova_venda = Venda(
+            nome_produto = self.nome_produto.data,
+            preco = self.preco.data,
+            quantidade = self.quantidade.data,
+            valor_total = ((self.preco.data) * (self.quantidade.data))
+        )
+
+        db.session.add(nova_venda)
+        db.session.commit()
 
 
 
