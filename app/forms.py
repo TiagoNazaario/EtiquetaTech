@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, FloatField, IntegerField
+from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from flask_login import current_user
 
 from app import db, bcrypt
 from app.models import Usuario, Venda
@@ -49,18 +50,33 @@ class LoginForm(FlaskForm):
 
 class VendaForm(FlaskForm):
     nome_produto = StringField('Produto', validators=[DataRequired()])
-    preco = FloatField('Preco', validators=[DataRequired()])
+    select_produto = SelectField('Opções',choices=[], coerce=str)
+    preco = StringField('Preco', validators=[DataRequired()])
     quantidade = IntegerField('Quantidade',validators=[DataRequired()])
-    valor_total = FloatField('Valor_Total')
     btn_salvar = SubmitField('Salvar')
+
+    def __init__(self, *args, **kwargs):
+        super(VendaForm, self).__init__(*args, **kwargs)
+        # busca produtos únicos do usuário logado
+        produtos = (
+            Venda.query.filter_by(usuario_id=current_user.id)
+            .with_entities(Venda.nome_produto)
+            .distinct()
+            .all()
+        )
+        # cria a lista de opções para o select
+        self.select_produto.choices = [(p[0], p[0]) for p in produtos]
+
+
 
     def save(self):
         nova_venda = Venda(
-            nome_produto = self.nome_produto.data,
-            preco = self.preco.data,
-            quantidade = self.quantidade.data,
-            valor_total = ((self.preco.data) * (self.quantidade.data))
-        )
+        nome_produto = self.nome_produto.data.capitalize(),
+        preco = float(self.preco.data.replace(',', '.')),
+        quantidade = self.quantidade.data,
+        usuario_id = current_user.id
+    )
+
 
         db.session.add(nova_venda)
         db.session.commit()

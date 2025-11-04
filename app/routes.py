@@ -1,6 +1,7 @@
 from app import app, db
+from collections import defaultdict
 from flask import render_template, url_for, request, redirect, flash
-from app.models import Usuario
+from app.models import Usuario, Venda
 from app.forms import User_Form, LoginForm, VendaForm
 from flask_login import login_user, logout_user, current_user, login_required
 
@@ -54,8 +55,8 @@ def Perfil():
 def Vendas_Registro():
     form = VendaForm()
     if form.validate_on_submit():
-        return redirect(url_for('Homepage'))
-    print(form.valor_total.data)
+        form.save()
+        return redirect(url_for('Vendas_Registro')) 
     return render_template('vendas.html', form=form)
 
 
@@ -63,7 +64,45 @@ def Vendas_Registro():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def Dash():
-    return render_template('dashboard.html')
+    vendas = Venda.query.filter_by(usuario_id=current_user.id).all()
+    # Criar listas com os dados
+    nome_produto = [v.nome_produto for v in vendas]
+    quantidade = [v.quantidade for v in vendas]
+    valores = [v.preco for v in vendas]
+    soma = sum(quantidade)
+    
+    # Agrupar produtos iguais para  somar as quantidades
+    produtos_dict = {}
+    for v in vendas:
+        produtos_dict[v.nome_produto] = produtos_dict.get(v.nome_produto, 0) + v.quantidade
+
+    produtos = list(produtos_dict.keys())
+    quantidades = list(produtos_dict.values())
+
+
+    # Agrupar por mês
+    meses_pt = {
+    'Jan': 'Jan', 'Feb': 'Fev', 'Mar': 'Mar', 'Apr': 'Abr',
+    'May': 'Mai', 'Jun': 'Jun', 'Jul': 'Jul', 'Aug': 'Ago',
+    'Sep': 'Set', 'Oct': 'Out', 'Nov': 'Nov', 'Dec': 'Dez'
+}
+
+    vendas_por_mes = defaultdict(float)
+    for v in vendas:
+        if v.data_venda:
+            mes_en = v.data_venda.strftime('%b')
+            mes_pt = meses_pt.get(mes_en, mes_en)
+            vendas_por_mes[mes_pt] += v.preco * v.quantidade
+
+    # Garantir ordem correta dos meses
+    ordem_meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                   'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+
+    meses = ordem_meses
+    valores = [vendas_por_mes.get(m, 0) for m in meses]
+    valor_total = round(sum(valores))
+    return render_template('dashboard.html', vendas=vendas, nome_produto=nome_produto, quantidade=quantidade, produtos=produtos, quantidades=quantidades, soma=soma, valor_total=valor_total, meses=meses, valores=valores)
+    
 
 
 

@@ -3,13 +3,21 @@ const ctxVendas = document.getElementById('chartVendas').getContext('2d');
 new Chart(ctxVendas, {
   type: 'bar',
   data: {
-    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+    labels: meses, // ← vindo do Flask
     datasets: [{
       label: 'Vendas (R$)',
-      data: [1200, 1900, 3000, 5000, 2300, 3200],
+      data: valores, // ← vindo do Flask
       borderWidth: 1,
       backgroundColor: '#007bff'
     }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
   }
 });
 
@@ -29,21 +37,27 @@ new Chart(ctxClientes, {
   }
 });
 
+// Função para gerar uma cor aleatória em formato RGB
+function gerarCorAleatoria() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Gera um array de cores com base no número de produtos
+const coresAleatorias = produtosLabels.map(() => gerarCorAleatoria());
+
 // Gráfico dos Produtos mais Vendidos
 const ctxProdutos = document.getElementById('chartProdutos').getContext('2d');
 new Chart(ctxProdutos, {
   type: 'pie',
   data: {
-    labels: ['Item1', 'Item2', 'Item3', 'Item4'],
+    labels: produtosLabels,
     datasets: [{
       label: 'Produtos mais vendidos',
-      data: [4, 5, 6, 23],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)',
-        'rgba(68, 216, 30, 1)'
-      ],
+      data: produtosData,
+      backgroundColor: coresAleatorias, // usa o array gerado
       hoverOffset: 4
     }]
   }
