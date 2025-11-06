@@ -1,27 +1,19 @@
-from app import db
-<<<<<<< HEAD
-from app.models import Venda
-from datetime import datetime, timezone
 import random
+from app import app, db
+from app.models import Venda, Usuario
 
-# pega o ano atual
-ano_atual = datetime.now().year
+with app.app_context():
 
-# busca todas as vendas que não têm data
-vendas = Venda.query.filter(Venda.data_venda == None).all()
+    max_id = db.session.query(db.func.max(Usuario.id)).scalar()
 
-for v in vendas:
-    # gera mês aleatório entre 1 e 12
-    mes = random.randint(1, 12)
-    # gera dia válido para o mês (máximo de 28 pra evitar erro em fevereiro)
-    dia = random.randint(1, 28)
-    # cria a data com fuso UTC
-    v.data_venda = datetime(ano_atual, mes, dia, tzinfo=timezone.utc)
-    db.session.add(v)
+    vendas = Venda.query.all()
+    contador = 0
 
-db.session.commit()
+    for v in vendas:
+        if not v.vendedor_id:
+            v.vendedor_id = random.randint(1, max_id)
+            contador += 1
 
-print(f"{len(vendas)} vendas atualizadas com datas aleatórias de {ano_atual}.")
-=======
+    db.session.commit()
 
->>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
+    print(f"{contador} vendas preenchidas com vendedor aleatório (1 até {max_id}).")

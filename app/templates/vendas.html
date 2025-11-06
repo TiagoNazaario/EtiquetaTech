@@ -12,33 +12,24 @@
         <div class="row">
 
             <!-- Sidebar -->
-            <nav class="col-md-2 d-none d-md-block sidebar pt-0 pb-0">
-                <div id="nav_venda"  class="sidebar-sticky">
-                    <div class="row">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" fill="currentColor" class="bi bi-database-fill" viewBox="1 1 13 15">
-                        <path d="M3.904 1.777C4.978 1.289 6.427 1 8 1s3.022.289 4.096.777C13.125 2.245 14 2.993 14 4s-.875 1.755-1.904 2.223C11.022 6.711 9.573 7 8 7s-3.022-.289-4.096-.777C2.875 5.755 2 5.007 2 4s.875-1.755 1.904-2.223"/>
+            
+            
+            <div id="ContMain" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
 
-                        <path d="M2 6.161V7c0 1.007.875 1.755 1.904 2.223C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777C13.125 8.755 14 8.007 14 7v-.839c-.457.432-1.004.751-1.49.972C11.278 7.693 9.682 8 8 8s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
+                {% include 'nav_dash.html' %}
+            
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
 
-                        <path d="M2 9.161V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13s3.022-.289 4.096-.777C13.125 11.755 14 11.007 14 10v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
-
-                        <path d="M2 12.161V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"/>
-
-                        </svg>
-                        <h2>EtiquetaTech</h2>
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                    <div class="alert alert-{{ categoria }} text-center">
+                        {{ mensagem }}
                     </div>
+                    {% endfor %}
+                {% endif %}
 
-                    <ul class="nav flex-column">
-                        <li><a href="{{url_for('Dash')}}">Início</a></li>
-                        <li>
-                            <a href="{{url_for('Vendas_Registro')}}">Registrar Venda</a>
-                        </li>
-                        <li><a href="#">Configurações</a></li>
-                        <li><a href="{{url_for('Homepage')}}">Sair</a></li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
+                {% endwith %}
+
                 <!-- Formulário -->
                 <div class="row justify-content-center">
                     <div class="col-md-7">
@@ -94,5 +85,18 @@
             });
         }
     });
+    
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+
+            alert.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+            alert.style.opacity = "0";
+            alert.style.transform = "translateY(-10px)";
+
+            setTimeout(() => alert.remove(), 850);
+
+        });
+    }, 3000);
+
     </script>
 {% endblock %}

@@ -1,21 +1,18 @@
 from flask_wtf import FlaskForm
-<<<<<<< HEAD
-from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField
-=======
-from wtforms import StringField, SubmitField, PasswordField, FloatField, IntegerField
->>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
+from wtforms import StringField, SubmitField, PasswordField, SelectField, IntegerField, FileField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from flask_login import current_user
+from flask_wtf.file import FileAllowed
 
 from app import db, bcrypt
-from app.models import Usuario, Venda
+from app.models import Usuario, Venda, Contato_Usuario
 
 class User_Form(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
-    confirm_senha = PasswordField('Senha', validators=[DataRequired(), EqualTo('senha')])
+    confirm_senha = PasswordField('Confirme a Senha', validators=[DataRequired(), EqualTo('senha')])
     btn_submit = SubmitField('Cadastrar')
 
     def validate_email(self, email):
@@ -54,7 +51,6 @@ class LoginForm(FlaskForm):
 
 class VendaForm(FlaskForm):
     nome_produto = StringField('Produto', validators=[DataRequired()])
-<<<<<<< HEAD
     select_produto = SelectField('Opções',choices=[], coerce=str)
     preco = StringField('Preco', validators=[DataRequired()])
     quantidade = IntegerField('Quantidade',validators=[DataRequired()])
@@ -79,25 +75,41 @@ class VendaForm(FlaskForm):
         nome_produto = self.nome_produto.data.capitalize(),
         preco = float(self.preco.data.replace(',', '.')),
         quantidade = self.quantidade.data,
-        usuario_id = current_user.id
-    )
-
-=======
-    preco = FloatField('Preco', validators=[DataRequired()])
-    quantidade = IntegerField('Quantidade',validators=[DataRequired()])
-    valor_total = FloatField('Valor_Total')
-    btn_salvar = SubmitField('Salvar')
-
-    def save(self):
-        nova_venda = Venda(
-            nome_produto = self.nome_produto.data,
-            preco = self.preco.data,
-            quantidade = self.quantidade.data,
-            valor_total = ((self.preco.data) * (self.quantidade.data))
-        )
->>>>>>> ab648a7fb326d4ac050e1892ccc1f66e1667bb29
+        usuario_id = current_user.id)
 
         db.session.add(nova_venda)
+        db.session.commit()
+
+
+class UploadForm(FlaskForm):
+    arquivo = FileField('Selecione o arquivo Excel', validators=[
+        DataRequired(),
+        FileAllowed(['xls', 'xlsx'], 'Apenas arquivos Excel!')
+    ])
+    btn_enviar = SubmitField('Enviar')
+
+
+class Contato_usuarioForm(FlaskForm):
+    telefone1 = StringField('Telefone 1', validators=[DataRequired()])
+    telefone2 = StringField('Telefone 2')
+    data_nascimento = DateField('Data de Nascimento', validators=[DataRequired()])
+    endereco = StringField('Endereço', validators=[DataRequired()])
+    cidade = StringField('Cidade', validators=[DataRequired()])
+    estado = StringField('Estado', validators=[DataRequired()])
+    cep = StringField('CEP', validators=[DataRequired()])
+
+    def save(self):
+        contato = Contato_Usuario(
+            telefone1 = self.telefone1.data,
+            telefone2 = self.telefone2.data ,
+            data_nascimento = self.data_nascimento.data,
+            endereco = self.endereco.data,
+            cidade = self.cidade.data,
+            estado = self.estado.data,
+            cep = self.cep.data
+        )
+
+        db.session.add(contato)
         db.session.commit()
 
 

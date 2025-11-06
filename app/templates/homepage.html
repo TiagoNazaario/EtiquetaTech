@@ -1,58 +1,63 @@
 {% extends 'base.html' %}
 {% block content %} 
 
-        <title>EtiquetaTech</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/homepage.css')}}">
+    <title>EtiquetaTech</title>
 
-        {% include 'nav.html' %}
+    {% include 'nav.html' %}
 
-        <style>
-            .container {
-                width: 900px !important;
-                text-align: center;
-            }
-            .row a{
-                width: auto;
-            }
-            #home h1{
-                color: rgb(35, 19, 175);
-                font-family: 'Sansation';
-                font-weight: 400;
+    <!-- ERRO na Venda-->
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
 
-            }
-        </style>
-                <!-- Login -->
-                {% with mensagens = get_flashed_messages(with_categories=true) %}
-                {% if mensagens %}
-                    {% for categoria, mensagem in mensagens %}
-                    <div class="alert alert-{{ categoria }}">
-                        {{ mensagem }}
-                    </div>
-                    {% endfor %}
-                {% endif %}
-                {% endwith %}
+    {% if mensagens %}
+        {% for categoria, mensagem in mensagens %}
+        <div class="alert alert-{{ categoria }}">
+            {{ mensagem }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    {% endwith %}
+
+
+        
+
+    <!-- USUÁRIO LOGADO -->
+    {% if current_user.is_authenticated %}
 
         <div class="container rounded shadow">
-            {% if current_user.is_authenticated %}
-                <div id="home"  class="">
-                <h1>Bem Vindo a EtiquetaTech</h1>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum vel molestias molestiae beatae accusamus ipsam alias, ullam modi fugit placeat, nobis maiores repellendus numquam facere nemo debitis provident haru Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatum odio similique rem. Magni dolores, maxime ratione doloribus dolor aliquam libero. Libero facere odio quidem nisi unde suscipit laborum aperiam ut!</p>
+            <div id="home"  class="mt-5 p-5">
+            <h1>Bem Vindo a <span style="color: rgb(35, 19, 175);">EtiquetaTech</span></h1>
+            <p>
+                Soluções inteligentes para controle de estoque, produção e vendas.
+                Gerencie tudo em um só lugar, com eficiência e praticidade.
+            </p>
+            </div>
         </div>
-            {% else %}
-                <h1>Faça seu Login</h1>
-                <form action="" method="post" class="row mt-4 p-4">
-                        {{form.csrf_token}}
-                        
-                        {{form.email.label()}}
-                        {{form.email(class="form-control")}}
-                        
-                        {{form.senha.label()}}
-                        {{form.senha(class="form-control")}}
 
-                        {{form.btn_submit(class="btn btn-primary col-2 mt-2")}}
+    <!-- USUÁRIO NÃO LOGADO  -->  
+    <!-- TELA DE LOGIN -->  
+    {% else %}
 
-                        <div class="row">Não tem cadastro?<a href="{{url_for('Cadastro')}}">  Clique aqui para cadastrar usuario</a></div>
-                </form>
-            {% endif %}
+        <div class="container rounded shadow">
+            <h1>Faça seu Login</h1>
+            <form action="" method="post" class="row mt-4 p-4">
+                    {{form.csrf_token}}
+                    
+                    {{form.email.label()}}
+                    {{form.email(class="form-control")}}
+                    
+                    {{form.senha.label()}}
+                    {{form.senha(class="form-control")}}
+
+                    {{form.btn_submit(class="btn btn-primary col-2 mt-2")}}
+
+                    <div class="row">Não tem cadastro?
+                        <a href="{{url_for('Cadastro')}}">  Clique aqui para cadastrar usuario</a>
+                    </div>
+            </form>
         </div>
+
+    {% endif %}
 
 {% endblock %} 

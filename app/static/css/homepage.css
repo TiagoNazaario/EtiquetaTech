@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+
+.container {
+    width: 900px !important;
+    text-align: center;
+}
+.row a{
+    width: auto;
+}
+#home h1{
+    font-family: 'Sansation';
+    font-weight: 400;
+}
+#home > p{
+    margin-top: 20px;
+}
