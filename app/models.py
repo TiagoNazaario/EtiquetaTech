@@ -37,7 +37,7 @@ class Contato_Usuario(db.Model):
     __tablename__ = 'contato_usuario'
 
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), name='fk_contato_usuario', nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id', name='fk_contato_usuario'), nullable=False, unique=True)
     telefone1 = db.Column(db.String(20), nullable=False, unique=True)
     telefone2 = db.Column(db.String(20), nullable=True, unique=True)
     data_nascimento = db.Column(db.Date, nullable=False)
@@ -57,7 +57,7 @@ class Venda(db.Model):
     preco = db.Column(db.Float, nullable=False)
     quantidade = db.Column(db.Integer, nullable=False)
     data_venda = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), name='fk_venda_usuario')
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id', name='fk_venda_usuario'))
 
     
 

@@ -4,6 +4,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='css/dash.css')}}">
+    <link rel="stylesheet" type="text/css" 
+      href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <title>DashBoards</title>
 
     <!-- Biblioteca de ícones e gráficos -->
@@ -39,7 +41,7 @@
                     <hr>
                     <mb-3>
                         <div class="row mb-3">
-                            <div class="col-md-3">
+                            <div class="col-md-3 text-shadow">
                                 <div class="cardDash">
                                 <h3>Total de Vendas</h3>
                                 <p>R$ {{ valor_total }}</p>
@@ -47,8 +49,8 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="cardDash">
-                                <h3>Novos Clientes</h3>
-                                <p>87</p>
+                                <h3>Pedidos Total</h3>
+                                <p>{{pedidos_total}}</p>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -57,10 +59,40 @@
                                 <p>{{ soma }}</p>
                                 </div>
                             </div>
+                            
                         </div>
+                        <hr>
                     </mb-3>
-                </div>
+                    <h3>Todos os Pedidos</h3>
+                    <div id="tabela" class="table-responsive mb-3">
+                        
+                        <table id="tabelaVendas"  class="table table-striped table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Produto</th>
+                                    <th>Preço (R$)</th>
+                                    <th>Quantidade</th>
+                                    <th>Data da Venda</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for v in vendas %}
+                                <tr>
+                                    <td>{{ v.id }}</td>
+                                    <td>{{ v.nome_produto }}</td>
+                                    <td>{{ v.preco }}</td>
+                                    <td>{{ v.quantidade }}</td>
+                                    <td data-order="{{ v.data_venda.strftime('%Y-%m-%d') }}">
+                                        {{ v.data_venda.strftime('%d/%m/%Y') }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
             </main>
         </div>
     </div>
@@ -74,8 +106,75 @@
         const produtosData = {{ top_quantidades | tojson }};
         const meses = {{ meses | tojson }};
         const valores = {{ valores | tojson }};
+        const pedidosMensais = {{ pedidos_mensais | tojson }};
     </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{url_for('static', filename='js/dashboard.js')}}"></script>
+    <!-- Moment + plugin para datas do DataTables -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.8/sorting/datetime-moment.js"></script>
+    <script>
+        $(function () {
+        // Faz o DataTables entender e ordenar datas no formato DD/MM/YYYY
+        $.fn.dataTable.moment('DD/MM/YYYY');
+
+        // Clona a linha do header para colocar os inputs de filtro
+        const $thead = $('#tabelaVendas thead');
+        $thead.find('tr').clone(true).addClass('filters').appendTo($thead);
+
+        const tabela = $('#tabelaVendas').DataTable({
+            // sem paginação
+            paging: false,
+            // PT-BR
+            language: { url: 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/pt-BR.json' },
+            // ordena por data (coluna 4, zero-based é 4) desc como padrão
+            order: [[4, 'desc']],
+            // alinhamentos e formatação
+            columnDefs: [
+            { targets: [0,3], className: 'text-end' }, // ID e Quantidade à direita
+            // Preço como número com 2 casas (usa separador BR no HTML já)
+            { targets: 2, className: 'text-end' }
+            ],
+            // Ativa os filtros por coluna no header clonado
+            initComplete: function () {
+            const api = this.api();
+
+            api.columns().every(function (i) {
+                const col = this;
+                const title = $thead.find('tr:eq(0) th').eq(i).text();
+
+                // coloca um input em cada <th> da linha de filtros
+                const thFilter = $thead.find('tr.filters th').eq(i);
+                const isDate = /Data/i.test(title);
+
+                thFilter.html(
+                isDate
+                ? '<input type="text" class="form-control form-control-sm" placeholder="dd/mm/aaaa" />'
+                : '<input type="text" class="form-control form-control-sm" placeholder="Filtrar ' + title + '" />'
+                );
+
+                $('input', thFilter).on('keyup change', function () {
+                const val = this.value;
+
+                if (isDate) {
+                    // Para datas, quando digitar a data completa faz match exato (evita “12/01” casar com “12/01/2024 e 12/01/2025”)
+                    if (val.length === 10) {
+                    col.search('^' + $.fn.dataTable.util.escapeRegex(val) + '$', true, false).draw();
+                    } else {
+                    // enquanto digita, aplica busca normal (contém)
+                    col.search(val).draw();
+                    }
+                } else {
+                    col.search(val).draw();
+                }
+                });
+            });
+            }
+        });
+        });
+    </script>
 {% endblock %}
 
 

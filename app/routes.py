@@ -2,7 +2,7 @@ from app import app, db
 from collections import defaultdict
 from flask import render_template, url_for, request, redirect, flash
 from app.models import Usuario, Venda
-from app.forms import User_Form, LoginForm, VendaForm, UploadForm
+from app.forms import User_Form, LoginForm, VendaForm, UploadForm, Contato_usuarioForm
 from flask_login import login_user, logout_user, current_user, login_required
 import pandas as pd
 from datetime import datetime, timezone
@@ -50,8 +50,12 @@ def Logout():
 @login_required
 def Perfil():
     id = current_user.id
-    obj = Usuario.query.get(id)
-    return render_template('perfil.html', obj=obj)
+    perfil = Usuario.query.get(id)
+    form = Contato_usuarioForm()
+    if form.validate_on_submit():
+        form.save()
+
+    return render_template('perfil.html', perfil=perfil, form=form)
 
 
 
@@ -73,12 +77,19 @@ def Vendas_Registro():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def Dash():
+    page = request.args.get('page', 1, type=int) 
+    per_page = 10 
+
+    vendas_pag = Venda.query.filter_by(usuario_id=current_user.id)\
+                            .order_by(Venda.data_venda.desc())\
+                            .paginate(page=page, per_page=per_page)
+
     vendas = Venda.query.filter_by(usuario_id=current_user.id).all()
     
     nome_produto = [v.nome_produto for v in vendas]
     quantidade = [v.quantidade for v in vendas]
     valores = [v.preco for v in vendas]
-    ##
+  
     vendas_por_ano_mes = defaultdict(lambda: defaultdict(float))
 
     for v in vendas:
@@ -99,7 +110,6 @@ def Dash():
             "label": f"Vendas {ano}",
             "data": valores
         })
-    ##
     
     produtos_dict = {}
     for v in vendas:
@@ -109,7 +119,6 @@ def Dash():
     quantidades = list(produtos_dict.values())
 
     top_10 = sorted(produtos_dict.items(), key=lambda x: x[1], reverse=True)[:10]
-
     top_produtos = [item[0] for item in top_10]
     top_quantidades = [item[1] for item in top_10]
 
@@ -127,6 +136,16 @@ def Dash():
             mes_pt = meses_pt.get(mes_en, mes_en)
             vendas_por_mes[mes_pt] += v.preco * v.quantidade
 
+    pedidos_por_mes = defaultdict(int)
+
+    for v in vendas:
+        if v.data_venda:
+            mes = v.data_venda.strftime('%b')
+            mes_pt = meses_pt.get(mes, mes)
+            pedidos_por_mes[mes_pt] += 1
+
+    pedidos_mensais = [pedidos_por_mes.get(m, 0) for m in ordem_meses]
+
     
     ordem_meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
@@ -134,11 +153,15 @@ def Dash():
     meses = ordem_meses
     valores = [vendas_por_mes.get(m, 0) for m in meses]
     valor_total = round(int(sum(valores)))
+    pedidos_total = len(vendas)
 
     soma = sum(quantidades)
 
-    return render_template('dashboard.html', vendas=vendas, nome_produto=nome_produto, quantidade=quantidade, produtos=produtos, quantidades=quantidades, soma=soma, valor_total=valor_total, meses=meses, valores=valores,
-    top_produtos=top_produtos, top_quantidades=top_quantidades)
+    return render_template('dashboard.html', vendas=vendas, nome_produto=nome_produto,
+        quantidade=quantidade, produtos=produtos, quantidades=quantidades,
+        soma=soma, valor_total=valor_total, meses=meses,
+        valores=valores, top_produtos=top_produtos, top_quantidades=top_quantidades,
+        pedidos_mensais=pedidos_mensais, pedidos_total=pedidos_total, vendas_pag=vendas_pag)
     
 
 

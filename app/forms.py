@@ -91,12 +91,13 @@ class UploadForm(FlaskForm):
 
 class Contato_usuarioForm(FlaskForm):
     telefone1 = StringField('Telefone 1', validators=[DataRequired()])
-    telefone2 = StringField('Telefone 2')
+    telefone2 = StringField('Telefone 2 (Opcional)')
     data_nascimento = DateField('Data de Nascimento', validators=[DataRequired()])
     endereco = StringField('Endereço', validators=[DataRequired()])
     cidade = StringField('Cidade', validators=[DataRequired()])
     estado = StringField('Estado', validators=[DataRequired()])
     cep = StringField('CEP', validators=[DataRequired()])
+    btn_salvar = SubmitField('Salvar')
 
     def save(self):
         contato = Contato_Usuario(

@@ -17,6 +17,12 @@ new Chart(ctxVendas, {
       y: {
         beginAtZero: true
       }
+    },
+    plugins: { 
+      title: {
+      display: true,
+      text: 'Vendas Mensais'
+      }
     }
   }
 });
@@ -28,12 +34,21 @@ new Chart(ctxClientes, {
   data: {
     labels: meses,
     datasets: [{
-      label: 'Novos Clientes',
-      data: [5, 8, 4, 6, 9, 7, 3],
+      label: 'Pedidos',
+      data: pedidosMensais,
       borderColor: '#28a745',
       fill: false,
       tension: 0.3
     }]
+  },
+  options: {
+    responsive: true,
+    plugins: { 
+      title: {
+      display: true,
+      text: 'Pedidos Mensais'
+      }
+    }
   }
 });
 
@@ -56,7 +71,7 @@ new Chart(ctxProdutos, {
     labels: produtosLabels,
     datasets: [{
       label: 'Produtos Vendidos',
-      data: produtosData && produtosData.length > 0 ? produtosData : [1],
+      data: produtosData && produtosData.length > 0 ? produtosData : [],
       backgroundColor: coresAleatorias, 
       hoverOffset: 25
     }]

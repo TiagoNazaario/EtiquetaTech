@@ -1,48 +1,79 @@
 {% extends 'base.html' %}
 {% block content %} 
 
+    <link rel="stylesheet" href="{{url_for('static', filename='css/perfil.css')}}">
+
     <title>Perfil</title>
     {% include 'nav.html' %}
-    <style>
-        .container {
-            width: 900px !important;
-        }
-        .container a {
-            text-decoration: none;
-            margin-top: 10px;
-            display: block;
-            width: max-content;
-            color: rgb(231, 14, 14);
-        }
-    </style>
 
-    <div class="container p-3 rounded shadow">
+    <div id="perfil_main" class="container p-4">
         <div class="row">
             <h2>Informações do Perfil</h2>
             <div class="col-md-6">
                 Nome:
-                <input type="text" value="{{obj.nome}}" class="form-control" readonly>
+                <input type="text" value="{{perfil.nome}}" class="form-control" readonly>
             </div>
             <div class="col-md-6">
                 Sobrenome:
-                <input type="text" value="{{obj.sobrenome}}" class="form-control" readonly>
+                <input type="text" value="{{perfil.sobrenome}}" class="form-control" readonly>
             </div>
             <div class="col-md-12">
                 Email:
-                <input type="text" value="{{obj.email}}" class="form-control" readonly>
+                <input type="text" value="{{perfil.email}}" class="form-control" readonly>
             </div>
         </div>
-        <a href="{{url_for('Logout')}}">Sair</a>
+        <div id="info" class="row">
+            <div id="adc">
+                <img src="{{url_for('static', filename='imgs/icons nav/icon-plus.png')}}" alt="img plus" style="filter: invert(65%) sepia(1%) saturate(1323%) hue-rotate(316deg) brightness(213%) contrast(113%);" class="nav-img" onclick="Clicar()">
+                <strong>Informações Adicionais</strong>
+            </div>
+            <a href="{{url_for('Logout')}}" class="logout">Sair do Perfil</a>
+        </div>
     </div>
 
+    <div id="perfil_adc" class="container p-4">
+        <div class="row">
+            <h2>Informações Adicionais</h2>
+            <div class="col-md-7">
+                {{form.telefone1.label()}}
+                {{form.telefone1(class="form-control")}}
+            </div>
+            <div  class="col-md-7">
+                {{form.telefone2.label()}}
+                {{form.telefone2(class="form-control")}}
+            </div>
+            <div class="col-md-3">
+                {{form.data_nascimento.label()}}
+                {{form.data_nascimento(class="form-control")}}
+            </div>
+            <hr style="width: 862px;margin-left: 13px;">
+            <div class="col-md-5">
+                {{form.cidade.label()}}
+                {{form.cidade(class="form-control")}}
+            </div>
+            <div class="col-md-5">
+                {{form.estado.label()}}
+                {{form.estado(class="form-control")}}
+            </div>
+            <div class="col-md-6">
+                {{form.endereco.label()}}
+                {{form.endereco(class="form-control")}}
+            </div>
+            <div class="col-md-3">
+                {{form.cep.label()}}
+                {{form.cep(class="form-control")}}
+            </div>
+            <hr style="width: 862px;margin-left: 13px;">
+            
+            <div id="btn_salvar">
+                {{form.btn_salvar(class="btn btn-primary")}}
+            </div>
+            
 
 
+        </div>
+    </div>
 
-
-
-
-
-
-
+    <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
 
 {% endblock %}
